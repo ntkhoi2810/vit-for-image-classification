@@ -94,6 +94,8 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, device, n
     
     early_stopping = EarlyStopping(patience=patience, save_path=save_path)
 
+    history = {'train_loss': [], 'val_loss': [], 'train_acc': [], 'val_acc': []}
+
     for epoch in range(num_epochs):
         print(f"\nEpoch {epoch+1}/{num_epochs}")
         print("-" * 20)
@@ -101,6 +103,11 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, device, n
         # Train & Validate
         train_loss, train_acc = train_epoch(model, train_loader, criterion, optimizer, device)
         val_loss, val_acc = evaluate(model, val_loader, criterion, device, phase="Validation")
+
+        history['train_loss'].append(train_loss)
+        history['val_loss'].append(val_loss)
+        history['train_acc'].append(train_acc)
+        history['val_acc'].append(val_acc)
 
         print(f"Train Loss: {train_loss:.4f} | Train Acc: {train_acc:.4f}")
         print(f"Val Loss:   {val_loss:.4f} | Val Acc:   {val_acc:.4f}")
@@ -114,4 +121,4 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, device, n
     # Load lại trọng số tốt nhất trước khi trả về
     print(f"\nLoading best model weights from {save_path}")
     model.load_state_dict(torch.load(save_path))
-    return model
+    return model, history

@@ -1,7 +1,7 @@
-from .cnn_baseline import SimpleCNN
-from .vision_transformer import get_vit
+from .cnn import SimpleCNN
+from .vit import get_vit
 from .swin_transformer import get_swin
-from .vit_variant import get_deit
+from .deit import get_deit
 
 def build_model(config):
 

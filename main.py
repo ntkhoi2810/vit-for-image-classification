@@ -8,7 +8,7 @@ import os
 from src.datasets import get_dataloaders
 from src.models import build_model
 from src.engine import train_model, evaluate
-from src.utils.helpers import seed_everything
+from src.utils.helpers import seed_everything, plot_and_save_loss
 
 def main():
     # Parse tham số dòng lệnh
@@ -54,7 +54,7 @@ def main():
     save_path = f"{save_dir}/{config['dataset']['name']}_{config['model']['model_type']}_best.pth"
     
     print("[*] Training...")
-    model = train_model(
+    model, history = train_model(
         model=model,
         train_loader=train_loader,
         val_loader=test_loader,  # Trong baseline này dùng test làm val
@@ -64,6 +64,12 @@ def main():
         num_epochs=config['training']['epochs'],
         patience=config['training']['patience'],
         save_path=save_path
+    )
+
+    plot_and_save_loss(
+        history=history,
+        dataset_name=config['dataset']['name'],
+        model_type=config['model']['model_type']
     )
 
     # 6. Đánh giá lại mô hình tốt nhất sau khi kết thúc
