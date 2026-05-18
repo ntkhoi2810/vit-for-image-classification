@@ -2,7 +2,7 @@ seed: 42
 dataset:
   name: "mnist"
   data_dir: "./data"
-  batch_size: 64
+  batch_size: 32
   img_size: 224
   num_workers: 4
 model:
