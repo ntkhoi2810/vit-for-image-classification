@@ -4,6 +4,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import os
+import gc
 
 from src.datasets import get_dataloaders
 from src.models import build_model
@@ -104,6 +105,20 @@ def main():
     # 6. Đánh giá lại mô hình tốt nhất sau khi kết thúc
     test_loss, test_acc = evaluate(model, test_loader, criterion, device, phase="Test")
     print(f"-> Final Test Loss: {test_loss:.4f} | Final Test Accuracy: {test_acc:.4f}")
+
+    print("\n[*] Clearing VRAM...")
+    del model
+    del optimizer
+    del criterion
+    del train_loader
+    del val_loader
+    del test_loader
+    
+    gc.collect() 
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
+        torch.cuda.ipc_collect()
+    print("[*] VRAM cleared successfully!\n")
 
 if __name__ == "__main__":
     main()
