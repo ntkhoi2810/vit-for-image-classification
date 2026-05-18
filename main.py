@@ -34,6 +34,35 @@ def main():
         img_size=config['dataset']['img_size'],
         num_workers=config['dataset']['num_workers']
     )
+
+    print("[*] Splitting train dataset for validation...")
+    full_train_dataset = train_loader.dataset
+    
+    # Xác định tỉ lệ tách (Ví dụ: 10% làm validation, bạn có thể chỉnh thành 0.2 nếu muốn 20%)
+    val_ratio = 0.1 
+    val_size = int(len(full_train_dataset) * val_ratio)
+    train_size = len(full_train_dataset) - val_size
+    
+    # Tách ngẫu nhiên dựa trên seed hệ thống để đảm bảo tính nhất quán giữa các lần chạy
+    train_dataset, val_dataset = random_split(
+        full_train_dataset, 
+        [train_size, val_size],
+        generator=torch.Generator().manual_seed(config.get('seed', 42))
+    )
+    
+    # Khởi tạo lại DataLoader cho tập Train mới và tập Validation mới
+    train_loader = DataLoader(
+        train_dataset,
+        batch_size=config['dataset']['batch_size'],
+        shuffle=True,
+        num_workers=config['dataset']['num_workers']
+    )
+    val_loader = DataLoader(
+        val_dataset,
+        batch_size=config['dataset']['batch_size'],
+        shuffle=False, # Validation không cần shuffle dữ liệu
+        num_workers=config['dataset']['num_workers']
+    )
     
     # Cập nhật số lớp và số kênh vào config của mô hình
     config['model']['num_classes'] = num_classes
@@ -57,7 +86,7 @@ def main():
     model, history = train_model(
         model=model,
         train_loader=train_loader,
-        val_loader=test_loader,  # Trong baseline này dùng test làm val
+        val_loader=val_loader,  # Trong baseline này dùng test làm val
         criterion=criterion,
         optimizer=optimizer,
         device=device,
