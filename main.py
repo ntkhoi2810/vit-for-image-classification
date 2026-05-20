@@ -6,10 +6,11 @@ import torch.optim as optim
 import os
 import gc
 
+from torch.utils.data import random_split, DataLoader
 from src.datasets import get_dataloaders
 from src.models import build_model
 from src.engine import train_model, evaluate
-from src.utils.helpers import seed_everything, plot_and_save_loss
+from src.utils.helpers import seed_everything, plot_and_save_metrics
 
 def main():
     # Parse tham số dòng lệnh
@@ -96,7 +97,7 @@ def main():
         save_path=save_path
     )
 
-    plot_and_save_loss(
+    plot_and_save_metrics(
         history=history,
         dataset_name=config['dataset']['name'],
         model_type=config['model']['model_type']

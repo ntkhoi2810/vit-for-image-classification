@@ -1,13 +1,13 @@
 seed: 42
 dataset:
-  name: "cifar10"
+  name: "cifar100"
   data_dir: "./data"
   batch_size: 64
   img_size: 32
   num_workers: 4
 model:
   model_type: "cnn"
-  pretrained: false
+  pretrained: true
 training:
   epochs: 100
   lr: 0.0001

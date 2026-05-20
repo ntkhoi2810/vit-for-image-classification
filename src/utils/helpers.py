@@ -2,7 +2,7 @@ import os
 import random
 import numpy as np
 import torch
-import matplotlib as plt
+import matplotlib.pyplot as plt
 
 def seed_everything(seed=42):
     random.seed(seed)
@@ -21,8 +21,8 @@ def plot_and_save_metrics(history, dataset_name, model_type, save_dir="outputs/l
     
     # 1. Vẽ và lưu Loss Curve
     plt.figure(figsize=(10, 6))
-    plt.plot(epochs, history['train_loss'], label='Train Loss', marker='o')
-    plt.plot(epochs, history['val_loss'], label='Validation Loss', marker='s')
+    plt.plot(epochs, history['train_loss'], label='Train Loss')
+    plt.plot(epochs, history['val_loss'], label='Validation Loss')
     
     plt.title(f'Loss Curve: {model_type.upper()} on {dataset_name.upper()}')
     plt.xlabel('Epochs')
@@ -38,8 +38,8 @@ def plot_and_save_metrics(history, dataset_name, model_type, save_dir="outputs/l
 
     # 2. Vẽ và lưu Accuracy Curve
     plt.figure(figsize=(10, 6))
-    plt.plot(epochs, history['train_acc'], label='Train Accuracy', marker='o', color='green')
-    plt.plot(epochs, history['val_acc'], label='Validation Accuracy', marker='s', color='orange')
+    plt.plot(epochs, history['train_acc'], label='Train Accuracy', color='green')
+    plt.plot(epochs, history['val_acc'], label='Validation Accuracy', color='orange')
     
     plt.title(f'Accuracy Curve: {model_type.upper()} on {dataset_name.upper()}')
     plt.xlabel('Epochs')

@@ -1,6 +1,6 @@
 seed: 42
 dataset:
-  name: "cifar10"
+  name: "cifar100"
   data_dir: "./data"
   batch_size: 32
   img_size: 224
@@ -8,7 +8,7 @@ dataset:
 model:
   model_type: "swin"
   model_name: "swin_tiny_patch4_window7_224"
-  pretrained: false
+  pretrained: true
 training:
   epochs: 100
   lr: 0.0001
